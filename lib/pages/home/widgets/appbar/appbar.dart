@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'appbar_leading.dart';
 import 'appbar_actions.dart';
+import 'package:arabic_font/arabic_font.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});
@@ -11,18 +12,20 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: const Text(
-        'HADJ DELIVERY',
-        style: TextStyle(
-          color: Color.fromARGB(255, 255, 68, 0),
+      title: Text(
+        'الحاج ديليفري',
+        style: ArabicTextStyle(
+          arabicFont: ArabicFont.dinNextLTArabic,
+          color: const Color(0xFFFF6B35),
           fontWeight: FontWeight.bold,
-          fontSize: 18,
+          fontSize: 20,
         ),
       ),
       backgroundColor: Colors.white,
       centerTitle: true,
-      leading: const AppbarLeading(),
-      actions: const [AppbarActions()],
+      elevation: 0,
+      leading: const AppbarLeading(), // أصبح للأيسر (الإعدادات)
+      actions: const [AppbarActions()], // أصبح لليمين (الملف الشخصي)
     );
   }
 }

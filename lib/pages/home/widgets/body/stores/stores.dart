@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:train/home/widgets/body/stores/storesmodel.dart';
+import 'storesmodel.dart';
 
 class Stores extends StatefulWidget {
   const Stores({super.key});

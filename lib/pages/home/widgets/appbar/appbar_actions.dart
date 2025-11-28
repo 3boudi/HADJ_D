@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class AppbarLeading extends StatelessWidget {
-  const AppbarLeading({super.key});
+class AppbarActions extends StatelessWidget {
+  const AppbarActions({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -10,16 +10,17 @@ class AppbarLeading extends StatelessWidget {
       builder: (context) {
         return GestureDetector(
           onTap: () {
-            Scaffold.of(context).openDrawer();
+            Scaffold.of(context).openEndDrawer();
           },
           child: Container(
             margin: const EdgeInsets.all(10),
             alignment: Alignment.center,
             width: 37,
             child: SvgPicture.asset(
-              'assets/icons/settings-svgrepo-com.svg',
+              'assets/icons/user-svgrepo-com.svg',
               height: 25,
               width: 25,
+              color: Colors.orange,
             ),
             decoration: BoxDecoration(
               color: const Color(0xFFF7F8F8),

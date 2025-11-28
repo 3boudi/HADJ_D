@@ -12,17 +12,19 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      drawer: const SittingDrawer(),
-      endDrawer: const ProfileDrawer(),
+      drawer: const SittingDrawer(), // أصبح الدراور الأيمن للملف الشخصي
+      endDrawer: const ProfileDrawer(), // أصبح الدراور الأيسر للإعدادات
       appBar: const CustomAppBar(),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Searchbar(),
-          SizedBox(height: 40),
-          Category(),
-          SizedBox(height: 40),
-        ],
+      body: const SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Searchbar(),
+            SizedBox(height: 30),
+            Category(),
+            SizedBox(height: 30),
+          ],
+        ),
       ),
     );
   }

@@ -19,9 +19,7 @@ class StoresModel {
     required this.boxColor,
   
 });
-}
-
-static List<StoresModel> getStores() {
+static List<StoresModel>? getStores() {
      List<StoresModel> stores = [];
 
     stores.add(
@@ -49,4 +47,5 @@ static List<StoresModel> getStores() {
     );
 
     return stores;
-  }
+}
+}
