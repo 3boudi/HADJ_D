@@ -20,7 +20,7 @@ class SplashLogo extends StatelessWidget {
           ),
         ],
       ),
-      child: const Icon(Icons.rocket_launch, color: Colors.white, size: 60),
+      child: Image.asset('assets/images/H_logo.png', fit: BoxFit.contain),
     );
   }
 }

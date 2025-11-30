@@ -67,7 +67,7 @@ class CategoryModel {
       CategoryModel(
         name: 'أكشاك',
         iconPath: 'assets/icons/kiosk.svg',
-        boxColor: const Color(0xFF7209B7),
+        boxColor: AppColors.primary,
       ),
     );
 
@@ -75,7 +75,7 @@ class CategoryModel {
       CategoryModel(
         name: 'اطلب أي شيء',
         iconPath: 'assets/icons/anything.svg',
-        boxColor: const Color(0xFF6A4C93),
+        boxColor: AppColors.primary,
       ),
     );
 

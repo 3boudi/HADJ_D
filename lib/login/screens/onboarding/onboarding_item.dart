@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../constants/colors.dart';
 import '../../models/onboarding_model.dart';
 import 'package:arabic_font/arabic_font.dart';
+import 'package:lottie/lottie.dart';
 
 class OnboardingItem extends StatelessWidget {
   final OnboardingModel page;
@@ -16,13 +17,14 @@ class OnboardingItem extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            width: 160,
-            height: 160,
-            decoration: BoxDecoration(
-              color: page.color.withOpacity(0.2),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(page.icon, size: 80, color: page.color),
+            width: 260,
+            height: 260,
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+            child: page.image != null
+                ? Image.asset(page.image!, fit: BoxFit.contain)
+                : page.networkImage != null
+                ? Lottie.asset(page.networkImage!, fit: BoxFit.contain)
+                : const SizedBox(),
           ),
           const SizedBox(height: 60),
           Text(

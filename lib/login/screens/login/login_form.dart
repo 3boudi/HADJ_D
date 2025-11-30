@@ -78,7 +78,11 @@ class _LoginFormState extends State<LoginForm> {
                 color: AppColors.primary,
                 borderRadius: BorderRadius.circular(16),
               ),
-              child: const Icon(Icons.person, color: Colors.white, size: 36),
+              child: Image.asset(
+                'assets/images/H_logo.png',
+                width: 30,
+                height: 30,
+              ),
             ),
             const SizedBox(height: 24),
             Text(

@@ -17,28 +17,30 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   final List<OnboardingModel> pages = [
     OnboardingModel(
-      title: 'مرحباً',
-      description: 'اكتشف ميزات وإمكانيات رائعة.',
-      icon: Icons.waving_hand,
-      color: AppColors.primary,
+      title: 'مرحبا بك',
+      description: 'افضل خدمة توصيل في قايس حاج ديلفري',
+      image: 'assets/images/H2.png',
     ),
     OnboardingModel(
-      title: 'سهل الاستخدام',
-      description: 'واجهة بسيطة وبديهية للجميع.',
-      icon: Icons.touch_app,
-      color: AppColors.secondary,
+      title: 'اربح الوقت',
+      description: 'من خلال خدمتنا السريعة والموثوقة.',
+      networkImage: "assets/lottie/Clock_loop.json",
     ),
     OnboardingModel(
-      title: 'ابق متصلاً',
-      description: 'حافظ على تزامن كل شيء عبر جميع أجهزتك.',
-      icon: Icons.sync,
-      color: const Color(0xFF10B981),
+      title: 'نوفر افضل العروض',
+      description: 'استفد من خصوماتنا الحصرية ',
+      networkImage: "assets/lottie/Offer.json",
     ),
+    OnboardingModel(
+      title: 'خدمة احترافية',
+      description: 'من فريقنا المدرب لتلبية احتياجاتك.',
+      networkImage: "assets/lottie/Deliveryguy.json",
+    ),
+
     OnboardingModel(
       title: 'ابدأ الآن',
       description: 'انضم إلينا وابدأ رحلتك اليوم.',
-      icon: Icons.rocket_launch,
-      color: const Color(0xFFF59E0B),
+      image: 'assets/images/H2.png',
     ),
   ];
 
