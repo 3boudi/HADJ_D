@@ -1,10 +1,12 @@
+import 'dart:ffi';
+
 import 'package:arabic_font/arabic_font.dart';
 import 'package:flutter/material.dart';
 
-Text? validateEmail(String? value) {
+Text? validateEmail(bool isLogin, String? value) {
   if (value == null || value.isEmpty)
     return Text(
-      'خطأ في البريد الإلكتروني',
+      'الرجاء إدخال البريد الإلكتروني',
       style: ArabicTextStyle(
         arabicFont: ArabicFont.dinNextLTArabic,
         color: Colors.red,
@@ -42,6 +44,7 @@ Text? validatePassword(String? value) {
       ),
     );
   }
+
   return null;
 }
 
@@ -50,7 +53,7 @@ Text? validatePhone(bool isLogin, String? value) {
 
   if (value == null || value.isEmpty)
     return Text(
-      'خطأ في رقم الهاتف',
+      'يرجى إدخال رقم الهاتف',
       style: ArabicTextStyle(
         arabicFont: ArabicFont.dinNextLTArabic,
         color: Colors.red,

@@ -6,6 +6,7 @@ import 'login_toggle.dart';
 import '/splash/splash_screen.dart';
 import 'package:arabic_font/arabic_font.dart';
 import 'package:train/login/validators.dart';
+import 'phone_confirmation_dialog.dart';
 
 class LoginForm extends StatefulWidget {
   final bool isLogin;
@@ -33,17 +34,44 @@ class _LoginFormState extends State<LoginForm> {
 
   void _submit() {
     if (_formKey.currentState!.validate()) {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => const SplashScreen(isAfterLogin: true),
-        ),
-      );
+      // إذا كان في وضع إنشاء حساب (!isLogin) نعرض dialog تأكيد رقم الهاتف
+      if (!widget.isLogin) {
+        _showPhoneConfirmationDialog();
+      } else {
+        // إذا كان في وضع تسجيل الدخول، ندخل مباشرة
+        _navigateToSplash();
+      }
     }
   }
 
-  String? _validateEmail(String? value) {
+  void _showPhoneConfirmationDialog() {
+    showDialog(
+      context: context,
+      barrierColor: Colors.black.withOpacity(0.5), // خلفية شبه شفافة
+      builder: (context) => PhoneConfirmationDialog(
+        phoneNumber: _phoneController.text,
+        onConfirm: () {
+          Navigator.of(context).pop(); // لإغلاق الـ dialog
+          _navigateToSplash();
+        },
+        onCancel: () {
+          Navigator.of(context).pop(); // لإغلاق الـ dialog
+        },
+      ),
+    );
+  }
+
+  void _navigateToSplash() {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => const SplashScreen(isAfterLogin: true),
+      ),
+    );
+  }
+
+  String? _validateEmail(bool isLogin, String? value) {
     if (widget.isLogin) return null; // الإيميل غير مطلوب في تسجيل الدخول
-    final result = validateEmail(value);
+    final result = validateEmail(isLogin, value);
     return result?.data; // ✅ تحويل Text? إلى String?
   }
 
@@ -88,7 +116,7 @@ class _LoginFormState extends State<LoginForm> {
       constraints: const BoxConstraints(maxWidth: 440),
       padding: const EdgeInsets.all(32),
       decoration: BoxDecoration(
-        color: AppColors.cardBackground,
+        color: AppColors.background,
         borderRadius: BorderRadius.circular(24),
       ),
       child: Form(
@@ -141,7 +169,7 @@ class _LoginFormState extends State<LoginForm> {
               obscurePassword: _obscurePassword,
               onTogglePassword: () =>
                   setState(() => _obscurePassword = !_obscurePassword),
-              emailValidator: _validateEmail,
+              emailValidator: (value) => _validateEmail(widget.isLogin, value),
               passwordValidator: _validatePassword,
               phoneValidator: _validatePhone,
               nameValidator: _validateName, // ✅ إضافة validator للاسم
