@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:train/constants/colors.dart';
 
 class AppbarActions extends StatelessWidget {
   const AppbarActions({super.key});
@@ -20,10 +21,10 @@ class AppbarActions extends StatelessWidget {
               'assets/icons/user-svgrepo-com.svg',
               height: 25,
               width: 25,
-              color: Colors.orange,
+              color: AppColors.primary,
             ),
             decoration: BoxDecoration(
-              color: const Color(0xFFF7F8F8),
+              color: AppColors.background,
               borderRadius: BorderRadius.circular(10),
             ),
           ),

@@ -19,7 +19,7 @@ class CategoryModel {
       CategoryModel(
         name: 'مطاعم',
         iconPath: 'assets/icons/restaurant.svg',
-        boxColor: AppColors.primary,
+        boxColor: AppColors.secondary,
       ),
     );
 
@@ -27,7 +27,7 @@ class CategoryModel {
       CategoryModel(
         name: 'حلويات',
         iconPath: 'assets/icons/dessert.svg',
-        boxColor: AppColors.primary,
+        boxColor: AppColors.secondary,
       ),
     );
 
@@ -35,7 +35,7 @@ class CategoryModel {
       CategoryModel(
         name: 'سوبرماركت',
         iconPath: 'assets/icons/supermarket.svg',
-        boxColor: AppColors.primary,
+        boxColor: AppColors.secondary,
       ),
     );
 
@@ -43,7 +43,7 @@ class CategoryModel {
       CategoryModel(
         name: 'خضار',
         iconPath: 'assets/icons/vegetables.svg',
-        boxColor: AppColors.primary,
+        boxColor: AppColors.secondary,
       ),
     );
 
@@ -51,7 +51,7 @@ class CategoryModel {
       CategoryModel(
         name: 'صنع المنزل',
         iconPath: 'assets/icons/home-cooking.svg',
-        boxColor: AppColors.primary,
+        boxColor: AppColors.secondary,
       ),
     );
 
@@ -59,7 +59,7 @@ class CategoryModel {
       CategoryModel(
         name: 'صيدليات',
         iconPath: 'assets/icons/pharmacy.svg',
-        boxColor: AppColors.primary,
+        boxColor: AppColors.secondary,
       ),
     );
 
@@ -67,7 +67,7 @@ class CategoryModel {
       CategoryModel(
         name: 'أكشاك',
         iconPath: 'assets/icons/kiosk.svg',
-        boxColor: AppColors.primary,
+        boxColor: AppColors.secondary,
       ),
     );
 
@@ -75,7 +75,7 @@ class CategoryModel {
       CategoryModel(
         name: 'اطلب أي شيء',
         iconPath: 'assets/icons/anything.svg',
-        boxColor: AppColors.primary,
+        boxColor: AppColors.secondary,
       ),
     );
 

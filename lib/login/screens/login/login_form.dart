@@ -5,6 +5,7 @@ import 'login_buttons.dart';
 import 'login_toggle.dart';
 import '/splash/splash_screen.dart';
 import 'package:arabic_font/arabic_font.dart';
+import 'package:train/login/validators.dart';
 
 class LoginForm extends StatefulWidget {
   final bool isLogin;
@@ -22,39 +23,63 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
+
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _nameController = TextEditingController();
+  final _phoneController = TextEditingController();
+
   bool _obscurePassword = true;
 
   void _submit() {
     if (_formKey.currentState!.validate()) {
-      if (_isValidLogin()) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => const SplashScreen(isAfterLogin: true),
-          ),
-        );
-      }
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const SplashScreen(isAfterLogin: true),
+        ),
+      );
     }
   }
 
-  bool _isValidLogin() {
-    final email = _emailController.text;
-    final emailValid = RegExp(
-      r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
-    ).hasMatch(email);
+  String? _validateEmail(String? value) {
+    if (widget.isLogin) return null; // الإيميل غير مطلوب في تسجيل الدخول
+    final result = validateEmail(value);
+    return result?.data; // ✅ تحويل Text? إلى String?
+  }
 
-    final password = _passwordController.text;
-    final passwordValid = password.length >= 6;
+  String? _validatePassword(String? value) {
+    final result = validatePassword(value);
+    return result?.data; // ✅ تحويل Text? إلى String?
+  }
 
-    if (!widget.isLogin) {
-      final name = _nameController.text;
-      final nameValid = name.length >= 2;
-      return emailValid && passwordValid && nameValid;
+  String? _validatePhone(String? value) {
+    // ✅ حسب النظام الجديد: رقم الهاتف مطلوب في الحالتين
+    if (value == null || value.isEmpty) {
+      return 'خطأ في رقم الهاتف';
     }
 
-    return emailValid && passwordValid;
+    final phoneValid = RegExp(r'^(05|06|07)[0-9]{8}$').hasMatch(value);
+
+    if (!phoneValid) {
+      return 'خطأ في رقم الهاتف';
+    }
+
+    return null;
+  }
+
+  String? _validateName(String? value) {
+    if (widget.isLogin) return null; // الاسم غير مطلوب في تسجيل الدخول
+    final result = validateName(value);
+    return result?.data; // ✅ تحويل Text? إلى String?
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    _nameController.dispose();
+    _phoneController.dispose();
+    super.dispose();
   }
 
   @override
@@ -85,6 +110,7 @@ class _LoginFormState extends State<LoginForm> {
               ),
             ),
             const SizedBox(height: 24),
+
             Text(
               widget.isLogin ? 'مرحباً بعودتك' : 'إنشاء حساب',
               style: ArabicTextStyle(
@@ -95,8 +121,9 @@ class _LoginFormState extends State<LoginForm> {
               ),
             ),
             const SizedBox(height: 8),
+
             Text(
-              widget.isLogin ? 'سجل الدخول للمتابعة' : 'سجل لتبدأ رحلتك',
+              widget.isLogin ? 'سجل الدخول برقم هاتفك' : 'سجل لتبدأ رحلتك',
               style: ArabicTextStyle(
                 arabicFont: ArabicFont.dinNextLTArabic,
                 fontSize: 16,
@@ -104,17 +131,26 @@ class _LoginFormState extends State<LoginForm> {
               ),
             ),
             const SizedBox(height: 40),
+
             LoginFields(
               isLogin: widget.isLogin,
               emailController: _emailController,
               passwordController: _passwordController,
               nameController: _nameController,
+              phoneController: _phoneController,
               obscurePassword: _obscurePassword,
               onTogglePassword: () =>
                   setState(() => _obscurePassword = !_obscurePassword),
+              emailValidator: _validateEmail,
+              passwordValidator: _validatePassword,
+              phoneValidator: _validatePhone,
+              nameValidator: _validateName, // ✅ إضافة validator للاسم
             ),
+
             const SizedBox(height: 32),
+
             LoginButtons(isLogin: widget.isLogin, onSubmit: _submit),
+
             const SizedBox(height: 20),
             LoginToggle(
               isLogin: widget.isLogin,

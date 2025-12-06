@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'appbar_leading.dart';
 import 'appbar_actions.dart';
 import 'package:arabic_font/arabic_font.dart';
+import '../../../../constants/colors.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});
@@ -16,12 +17,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         'الحاج ديليفري',
         style: ArabicTextStyle(
           arabicFont: ArabicFont.dinNextLTArabic,
-          color: const Color(0xFFFF6B35),
+          color: AppColors.primary,
           fontWeight: FontWeight.bold,
           fontSize: 20,
         ),
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.background,
       centerTitle: true,
       elevation: 0,
       leading: const AppbarLeading(), // أصبح للأيسر (الإعدادات)

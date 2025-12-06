@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:arabic_font/arabic_font.dart';
+import 'package:train/constants/colors.dart';
 
 class ProfileDrawer extends StatelessWidget {
   const ProfileDrawer({super.key});
@@ -36,7 +37,7 @@ class ProfileDrawer extends StatelessWidget {
                   style: ArabicTextStyle(
                     arabicFont: ArabicFont.dinNextLTArabic,
                     fontSize: 14,
-                    color: Colors.grey,
+                    color: AppColors.textPrimary,
                   ),
                 ),
               ],

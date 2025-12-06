@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'widgets/appbar/appbar.dart';
+
 import 'widgets/appbar/profile_drawer.dart';
 import 'widgets/appbar/sitting_drawer.dart';
 import 'widgets/body/searchcolum/searchbar.dart';
@@ -14,7 +14,6 @@ class HomePage extends StatelessWidget {
       backgroundColor: Colors.white,
       drawer: const SittingDrawer(), // أصبح الدراور الأيمن للملف الشخصي
       endDrawer: const ProfileDrawer(), // أصبح الدراور الأيسر للإعدادات
-      appBar: const CustomAppBar(),
       body: const SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

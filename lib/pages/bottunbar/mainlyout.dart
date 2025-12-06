@@ -4,6 +4,9 @@ import '../settings/settings.dart';
 import '../home/home.dart';
 import '../profile/profile.dart';
 import 'package:train/constants/colors.dart';
+import 'package:train/pages/home/widgets/appbar/appbar.dart';
+import 'package:train/pages/home/widgets/appbar/profile_drawer.dart';
+import 'package:train/pages/home/widgets/appbar/sitting_drawer.dart';
 
 class MainLayout extends StatefulWidget {
   const MainLayout({super.key});
@@ -24,6 +27,9 @@ class _MainLayoutState extends State<MainLayout> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const SittingDrawer(),
+      endDrawer: const ProfileDrawer(),
+      appBar: const CustomAppBar(),
       body: screens[currentIndex],
       bottomNavigationBar: CustomBottomNavBar(
         currentIndex: currentIndex,
