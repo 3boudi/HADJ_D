@@ -69,30 +69,20 @@ class _LoginFormState extends State<LoginForm> {
     );
   }
 
-  String? _validateEmail(bool isLogin, String? value) {
+  String? _validateEmail(String? value) {
     if (widget.isLogin) return null; // الإيميل غير مطلوب في تسجيل الدخول
-    final result = validateEmail(isLogin, value);
+    final result = validateEmail(value);
+    return result?.data;
+  }
+
+  String? _validatePassword(bool isLogin, String? value) {
+    final result = validatePassword(isLogin, value);
     return result?.data; // ✅ تحويل Text? إلى String?
   }
 
-  String? _validatePassword(String? value) {
-    final result = validatePassword(value);
-    return result?.data; // ✅ تحويل Text? إلى String?
-  }
-
-  String? _validatePhone(String? value) {
-    // ✅ حسب النظام الجديد: رقم الهاتف مطلوب في الحالتين
-    if (value == null || value.isEmpty) {
-      return 'خطأ في رقم الهاتف';
-    }
-
-    final phoneValid = RegExp(r'^(05|06|07)[0-9]{8}$').hasMatch(value);
-
-    if (!phoneValid) {
-      return 'خطأ في رقم الهاتف';
-    }
-
-    return null;
+  String? _validatePhone(bool isLogin, String? value) {
+    final result = validatePhone(isLogin, value);
+    return result?.data;
   }
 
   String? _validateName(String? value) {
@@ -169,9 +159,10 @@ class _LoginFormState extends State<LoginForm> {
               obscurePassword: _obscurePassword,
               onTogglePassword: () =>
                   setState(() => _obscurePassword = !_obscurePassword),
-              emailValidator: (value) => _validateEmail(widget.isLogin, value),
-              passwordValidator: _validatePassword,
-              phoneValidator: _validatePhone,
+              emailValidator: _validateEmail,
+              passwordValidator: (value) =>
+                  _validatePassword(widget.isLogin, value),
+              phoneValidator: (value) => _validatePhone(widget.isLogin, value),
               nameValidator: _validateName, // ✅ إضافة validator للاسم
             ),
 

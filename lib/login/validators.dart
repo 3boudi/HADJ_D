@@ -1,9 +1,7 @@
-import 'dart:ffi';
-
 import 'package:arabic_font/arabic_font.dart';
 import 'package:flutter/material.dart';
 
-Text? validateEmail(bool isLogin, String? value) {
+Text? validateEmail(String? value) {
   if (value == null || value.isEmpty)
     return Text(
       'الرجاء إدخال البريد الإلكتروني',
@@ -32,19 +30,41 @@ Text? validateEmail(bool isLogin, String? value) {
   return null;
 }
 
-Text? validatePassword(String? value) {
-  if (value == null || value.length < 6) {
-    return Text(
-      'جرب كلمة مرور(6 أحرف على الأقل)',
-      style: ArabicTextStyle(
-        arabicFont: ArabicFont.dinNextLTArabic,
-        color: Colors.red,
-        fontSize: 14,
-        fontWeight: FontWeight.bold,
-      ),
-    );
+Text? validatePassword(bool isLogin, String? value) {
+  if (!isLogin) {
+    if (value == null || value.isEmpty)
+      return Text(
+        'الرجاء إدخال كلمة المرور',
+        style: ArabicTextStyle(
+          arabicFont: ArabicFont.dinNextLTArabic,
+          color: Colors.red,
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+        ),
+      );
+    if (value.length < 6)
+      return Text(
+        'جرب كلمة مرور(6 أحرف على الأقل)',
+        style: ArabicTextStyle(
+          arabicFont: ArabicFont.dinNextLTArabic,
+          color: Colors.red,
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+        ),
+      );
   }
-
+  if (isLogin) {
+    if (value == null || value.isEmpty || value.length < 6)
+      return Text(
+        'كلمة المرور خاطئة',
+        style: ArabicTextStyle(
+          arabicFont: ArabicFont.dinNextLTArabic,
+          color: Colors.red,
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+        ),
+      );
+  }
   return null;
 }
 
