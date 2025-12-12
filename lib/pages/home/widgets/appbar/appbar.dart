@@ -22,11 +22,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           fontSize: 20,
         ),
       ),
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.background, // إزالة withOpacity(0.0)
       centerTitle: true,
       elevation: 0,
-      leading: const AppbarLeading(), // أصبح للأيسر (الإعدادات)
-      actions: const [AppbarActions()], // أصبح لليمين (الملف الشخصي)
+      leading: const AppbarLeading(),
+      actions: const [AppbarActions()],
     );
   }
 }
