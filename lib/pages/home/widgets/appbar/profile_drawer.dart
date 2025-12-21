@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:arabic_font/arabic_font.dart';
 import 'package:train/constants/colors.dart';
+import 'package:lottie/lottie.dart';
+import 'package:train/login/screens/login/login_page.dart';
 
 class ProfileDrawer extends StatelessWidget {
   const ProfileDrawer({super.key});
@@ -71,7 +73,30 @@ class ProfileDrawer extends StatelessWidget {
                 _buildDrawerItem(
                   icon: Icons.logout,
                   title: 'تسجيل الخروج',
-                  onTap: () {},
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (context) => Center(
+                        child: Lottie.asset(
+                          'assets/lottie/loading.json',
+                          width: 150,
+                          height: 200,
+                        ),
+                      ),
+                    );
+
+                    Future.delayed(const Duration(seconds: 3), () {
+                      if (context.mounted) {
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                            builder: (context) => const LoginPage(),
+                          ),
+                          (route) => false,
+                        );
+                      }
+                    });
+                  },
                 ),
               ],
             ),

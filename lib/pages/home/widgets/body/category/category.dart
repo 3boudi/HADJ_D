@@ -14,6 +14,8 @@ class Category extends StatefulWidget {
     required this.onCategorySelected,
   });
 
+  static get name => null;
+
   @override
   State<Category> createState() => _CategoryState();
 }
@@ -119,11 +121,11 @@ class _CategoryState extends State<Category> {
                           ),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: SvgPicture.asset(
+                            child: Image.asset(
                               category.iconPath!,
                               color: isSelected
                                   ? AppColors.primary
-                                  : category.boxColor,
+                                  : AppColors.textPrimary,
                             ),
                           ),
                         ),
@@ -139,7 +141,7 @@ class _CategoryState extends State<Category> {
                               fontWeight: FontWeight.w600,
                               color: isSelected
                                   ? AppColors.primary
-                                  : Colors.black87,
+                                  : AppColors.textPrimary,
                             ),
                           ),
                         ),

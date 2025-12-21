@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'splash_content.dart';
 import 'package:train/login/screens/onboarding/onboarding_page.dart';
 import 'package:train/pages/bottunbar/mainlyout.dart';
@@ -45,6 +46,18 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.isAfterLogin) {
+      return Scaffold(
+        backgroundColor: Colors.white,
+        body: Center(
+          child: Lottie.asset(
+            'assets/lottie/loading.json',
+            width: 150,
+            height: 150,
+          ),
+        ),
+      );
+    }
     return const Scaffold(body: SplashContent());
   }
 }

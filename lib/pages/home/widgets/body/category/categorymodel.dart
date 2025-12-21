@@ -1,98 +1,98 @@
+// file: models/category_model.dart
 import 'package:flutter/material.dart';
 import 'package:train/constants/colors.dart';
 
 class CategoryModel {
-  String? id;
-  String? name;
-  String? iconPath;
-  Color? boxColor;
+  final String id;
+  final String name;
+  final String iconPath;
+  final Color boxColor;
+  final bool isValidForStores;
 
   CategoryModel({
     required this.id,
     required this.name,
     required this.iconPath,
-    required this.boxColor,
+    this.boxColor = AppColors.secondary,
+    this.isValidForStores = true,
   });
 
-  // خاصية للتحقق مما إذا كانت الفئة صالحة للمتاجر (ليست "اطلب أي شيء")
-  bool get isValidForStores => id != '8';
+  factory CategoryModel.fromMap(Map<String, dynamic> map) {
+    return CategoryModel(
+      id: map['id'] ?? '',
+      name: map['name'] ?? '',
+      iconPath: map['iconPath'] ?? 'assets/images/default_category.png',
+      isValidForStores: map['isValidForStores'] ?? true,
+    );
+  }
 
-  static List<CategoryModel>? getCategories() {
-    List<CategoryModel> categories = [];
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'iconPath': iconPath,
+      'isValidForStores': isValidForStores,
+    };
+  }
 
-    categories.add(
+  static List<CategoryModel> getCategories() {
+    return [
       CategoryModel(
         id: '1',
         name: 'مطاعم',
-        iconPath: 'assets/icons/restaurant.svg',
-        boxColor: AppColors.secondary,
+        iconPath: 'assets/images/resturant.png',
       ),
-    );
-
-    categories.add(
       CategoryModel(
         id: '2',
         name: 'حلويات',
-        iconPath: 'assets/icons/dessert.svg',
-        boxColor: AppColors.secondary,
+        iconPath: 'assets/images/sweets.png',
       ),
-    );
-
-    categories.add(
       CategoryModel(
         id: '3',
         name: 'سوبرماركت',
-        iconPath: 'assets/icons/supermarket.svg',
-        boxColor: AppColors.secondary,
+        iconPath: 'assets/images/supermarket.png',
       ),
-    );
-
-    categories.add(
       CategoryModel(
         id: '4',
         name: 'خضار',
-        iconPath: 'assets/icons/vegetables.svg',
-        boxColor: AppColors.secondary,
+        iconPath: 'assets/images/vegetables.png',
       ),
-    );
-
-    categories.add(
       CategoryModel(
         id: '5',
-        name: 'صنع المنزل',
-        iconPath: 'assets/icons/home-cooking.svg',
-        boxColor: AppColors.secondary,
+        name: 'جزار',
+        iconPath: 'assets/images/butcher.png',
       ),
-    );
-
-    categories.add(
       CategoryModel(
         id: '6',
-        name: 'صيدليات',
-        iconPath: 'assets/icons/pharmacy.svg',
-        boxColor: AppColors.secondary,
+        name: 'صنع المنزل',
+        iconPath: 'assets/images/home-cooking.png',
       ),
-    );
-
-    categories.add(
       CategoryModel(
         id: '7',
-        name: 'أكشاك',
-        iconPath: 'assets/icons/kiosk.svg',
-        boxColor: AppColors.secondary,
+        name: 'محلات متنوعة',
+        iconPath: 'assets/images/various-shops.png',
       ),
-    );
-
-    // فئة "اطلب أي شيء" - هذه الفئة لا يمكن للمتاجر الارتباط بها
-    categories.add(
       CategoryModel(
         id: '8',
-        name: 'اطلب أي شيء',
-        iconPath: 'assets/icons/anything.svg',
-        boxColor: AppColors.secondary,
+        name: 'صيدليات',
+        iconPath: 'assets/images/pharmacy.png',
       ),
-    );
-
-    return categories;
+      CategoryModel(
+        id: '9',
+        name: 'مكتبات',
+        iconPath: 'assets/images/library.png',
+      ),
+      CategoryModel(
+        id: '10',
+        name: 'أكشاك',
+        iconPath: 'assets/images/kiosk.png',
+      ),
+      CategoryModel(
+        id: '11',
+        name: 'اطلب أي شيء',
+        iconPath: 'assets/images/anything.png',
+        isValidForStores: false,
+      ),
+    ];
   }
 }
