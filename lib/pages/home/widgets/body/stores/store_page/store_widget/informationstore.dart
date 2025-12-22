@@ -2,26 +2,12 @@
 import 'package:flutter/material.dart';
 import 'package:arabic_font/arabic_font.dart';
 import '../../../../../../../../constants/colors.dart';
+import '../models/store_model.dart';
 
 class InformationStore extends StatelessWidget {
-  final String storeName;
-  final bool isOpen;
-  final String deliveryTime;
-  final String deliveryPrice;
-  final double rating;
-  final int ratingCount;
-  final String location;
+  final StoreModel store;
 
-  const InformationStore({
-    super.key,
-    this.storeName = 'مشاوي سطايغي',
-    this.isOpen = true,
-    this.deliveryTime = '20 - 40',
-    this.deliveryPrice = '200 دج',
-    this.rating = 4.28,
-    this.ratingCount = 88,
-    this.location = 'Juin 19',
-  });
+  const InformationStore({super.key, required this.store});
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +32,7 @@ class InformationStore extends StatelessWidget {
           children: [
             // اسم المتجر
             Text(
-              storeName,
+              store.name,
               style: ArabicTextStyle(
                 arabicFont: ArabicFont.dinNextLTArabic,
                 fontSize: 22,
@@ -66,15 +52,15 @@ class InformationStore extends StatelessWidget {
                     Icon(
                       Icons.circle,
                       size: 12,
-                      color: isOpen ? Colors.green : Colors.red,
+                      color: store.isOpen ? Colors.green : Colors.red,
                     ),
                     const SizedBox(width: 4),
                     Text(
-                      isOpen ? 'مفتوح' : 'مغلق',
+                      store.isOpen ? 'مفتوح' : 'مغلق',
                       style: ArabicTextStyle(
                         arabicFont: ArabicFont.dinNextLTArabic,
                         fontSize: 14,
-                        color: isOpen ? Colors.green : Colors.red,
+                        color: store.isOpen ? Colors.green : Colors.red,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -93,7 +79,7 @@ class InformationStore extends StatelessWidget {
                     ),
                     const SizedBox(width: 4),
                     Text(
-                      location,
+                      store.location,
                       style: ArabicTextStyle(
                         arabicFont: ArabicFont.dinNextLTArabic,
                         fontSize: 14,
@@ -112,19 +98,19 @@ class InformationStore extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // وقت التوصيل
+                // وقت التوصيل - Hardcoded in UI
                 _InfoItem(
                   icon: Icons.timer_outlined,
                   title: 'توصيل خلال',
-                  value: '$deliveryTime د',
+                  value: '20 - 40 د',
                   iconColor: AppColors.primary,
                 ),
 
-                // سعر التوصيل
+                // سعر التوصيل - Properly formatted from double
                 _InfoItem(
                   icon: Icons.delivery_dining_outlined,
                   title: 'سعر التوصيل',
-                  value: deliveryPrice,
+                  value: _formatDeliveryPrice(store.deliveryPrice),
                   iconColor: AppColors.primary,
                 ),
 
@@ -132,7 +118,7 @@ class InformationStore extends StatelessWidget {
                 _InfoItem(
                   icon: Icons.star,
                   title: 'التقييم',
-                  value: '$rating ($ratingCount)',
+                  value: '${store.rating} (${store.orderCount})',
                   iconColor: Colors.amber,
                 ),
               ],
@@ -141,6 +127,17 @@ class InformationStore extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  // Helper method to format delivery price
+  String _formatDeliveryPrice(double price) {
+    if (price == 0.0) {
+      return 'مجاناً';
+    } else if (price == price.truncateToDouble()) {
+      return '${price.toInt()} دج';
+    } else {
+      return '${price.toStringAsFixed(2)} دج';
+    }
   }
 }
 

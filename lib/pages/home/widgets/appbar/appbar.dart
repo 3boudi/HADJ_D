@@ -13,6 +13,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      scrolledUnderElevation: 0,
+      backgroundColor: AppColors.background,
       title: Text(
         'الحاج ديليفري',
         style: ArabicTextStyle(
@@ -20,9 +22,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           color: AppColors.primary,
           fontWeight: FontWeight.bold,
           fontSize: 20,
+          backgroundColor: AppColors.background,
         ),
       ),
-      backgroundColor: AppColors.background, // إزالة withOpacity(0.0)
       centerTitle: true,
       elevation: 0,
       leading: const AppbarLeading(),

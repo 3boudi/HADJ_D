@@ -15,12 +15,12 @@ class StoreDataManager {
         location: 'ساحة 8 ماي 1945',
         orderCount: 88,
         rating: 4.3,
-        imageUrl: 'assets/images/store1.png',
+        imageUrl: 'assets/images/q.png',
         isActive: true,
         createdAt: DateTime.now().subtract(const Duration(days: 30)),
         updatedAt: DateTime.now(),
         isOpen: false, // مغلق
-        deliveryPrice: '150 دج',
+        deliveryPrice: 150,
         isPromoted: true,
         isExclusive: true,
         categories: ['شواء', 'كبدة', 'لحم أحمر'],
@@ -72,7 +72,7 @@ class StoreDataManager {
         createdAt: DateTime.now().subtract(const Duration(days: 25)),
         updatedAt: DateTime.now(),
         isOpen: true, // مفتوح
-        deliveryPrice: '150 دج',
+        deliveryPrice: 150,
         isPromoted: true,
         isExclusive: false,
         categories: ['حلويات', 'معجنات'],
@@ -112,7 +112,7 @@ class StoreDataManager {
         createdAt: DateTime.now().subtract(const Duration(days: 40)),
         updatedAt: DateTime.now(),
         isOpen: true, // مفتوح
-        deliveryPrice: '150 دج',
+        deliveryPrice: 150,
         isPromoted: true,
         isExclusive: false,
         categories: ['سوبرماركت', 'خضار', 'فواكه'],
@@ -152,7 +152,7 @@ class StoreDataManager {
         createdAt: DateTime.now().subtract(const Duration(days: 10)),
         updatedAt: DateTime.now(),
         isOpen: true, // مفتوح
-        deliveryPrice: '200 دج',
+        deliveryPrice: 200,
         isPromoted: false,
         isExclusive: false,
         categories: ['لحوم', 'دجاج'],
@@ -192,7 +192,7 @@ class StoreDataManager {
         createdAt: DateTime.now().subtract(const Duration(days: 15)),
         updatedAt: DateTime.now(),
         isOpen: true, // مفتوح
-        deliveryPrice: '100 دج',
+        deliveryPrice: 100,
         isPromoted: true,
         isExclusive: false,
         categories: ['منزلي', 'أكلات شعبية'],
@@ -331,23 +331,18 @@ class StoreDataManager {
   // ترتيب المتاجر حسب الأولوية: مفتوح > مروج > تقييم عالي
   static List<StoreModel> _sortStores(List<StoreModel> stores) {
     stores.sort((a, b) {
-      // 1. أولاً: المتاجر المفتوحة أولاً
       if (a.isOpen && !b.isOpen) return -1;
       if (!a.isOpen && b.isOpen) return 1;
 
-      // 2. ثانياً: المتاجر المروجة أولاً
       if (a.isPromoted && !b.isPromoted) return -1;
       if (!a.isPromoted && b.isPromoted) return 1;
 
-      // 3. ثالثاً: المتاجر الحصرية
       if (a.isExclusive && !b.isExclusive) return -1;
       if (!a.isExclusive && b.isExclusive) return 1;
 
-      // 4. رابعاً: حسب التقييم (من الأعلى للأدنى)
       int ratingComparison = b.rating.compareTo(a.rating);
       if (ratingComparison != 0) return ratingComparison;
 
-      // 5. خامساً: حسب عدد الطلبات (من الأعلى للأدنى)
       return b.orderCount.compareTo(a.orderCount);
     });
 
@@ -357,12 +352,6 @@ class StoreDataManager {
   // ترتيب حسب التقييم فقط
   static List<StoreModel> _sortByRating(List<StoreModel> stores) {
     stores.sort((a, b) => b.rating.compareTo(a.rating));
-    return stores;
-  }
-
-  // ترتيب حسب عدد الطلبات
-  static List<StoreModel> _sortByOrderCount(List<StoreModel> stores) {
-    stores.sort((a, b) => b.orderCount.compareTo(a.orderCount));
     return stores;
   }
 

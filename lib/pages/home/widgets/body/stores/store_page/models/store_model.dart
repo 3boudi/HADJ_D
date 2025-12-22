@@ -1,4 +1,7 @@
 // file: models/store_model.dart
+
+import 'dart:ffi';
+
 class StoreModel {
   final String id;
   final String name;
@@ -12,7 +15,7 @@ class StoreModel {
   final DateTime createdAt;
   final DateTime updatedAt;
   final bool isOpen;
-  final String deliveryPrice;
+  final double deliveryPrice;
   final bool isPromoted;
   final bool isExclusive;
   final List<String> categories;
@@ -30,13 +33,13 @@ class StoreModel {
     required this.createdAt,
     required this.updatedAt,
     this.isOpen = true,
-    this.deliveryPrice = '100 دج',
+    this.deliveryPrice = 100,
     this.isPromoted = false,
     this.isExclusive = false,
     this.categories = const [],
   });
 
-  String get displayImage => imageUrl ?? 'assets/images/default_store.png';
+  String get displayImage => imageUrl ?? 'assets/images/hadjADS.png';
   bool get isValidCategory => categoryId != '11';
 
   // معلومات المتجر للصفحة الرئيسية

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'categorymodel.dart';
 import 'package:arabic_font/arabic_font.dart';
 import 'package:train/constants/colors.dart';

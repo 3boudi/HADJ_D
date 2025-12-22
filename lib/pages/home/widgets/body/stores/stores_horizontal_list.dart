@@ -25,6 +25,7 @@ class StoresHorizontalList extends StatefulWidget {
 class _StoresHorizontalListState extends State<StoresHorizontalList> {
   List<StoreModel> stores = [];
   bool isLoading = true;
+  final Set<String> _precachedImages = {};
 
   @override
   void initState() {
@@ -54,7 +55,31 @@ class _StoresHorizontalListState extends State<StoresHorizontalList> {
     // تطبيق الترتيب الإضافي إذا طلب
     _applySorting();
 
+    // Precache images for smoother transitions
+    _precacheStoreImages();
+
     setState(() => isLoading = false);
+  }
+
+  void _precacheStoreImages() {
+    for (var store in stores) {
+      if (!_precachedImages.contains(store.id)) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          precacheImage(
+            AssetImage(store.displayImage),
+            context,
+            onError: (exception, stackTrace) {
+              // If main image fails, preload the default image
+              precacheImage(
+                const AssetImage('assets/images/hadjADS.png'),
+                context,
+              );
+            },
+          );
+          _precachedImages.add(store.id);
+        });
+      }
+    }
   }
 
   void _applySorting() {
@@ -92,7 +117,10 @@ class _StoresHorizontalListState extends State<StoresHorizontalList> {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => StorePage(storeId: store.id)),
+          MaterialPageRoute(
+            builder: (context) => StorePage(storeId: store.id),
+            fullscreenDialog: false,
+          ),
         );
       },
       child: Container(
@@ -102,14 +130,6 @@ class _StoresHorizontalListState extends State<StoresHorizontalList> {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 10,
-              spreadRadius: 2,
-              offset: const Offset(0, 4),
-            ),
-          ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -122,25 +142,61 @@ class _StoresHorizontalListState extends State<StoresHorizontalList> {
               ),
               child: Stack(
                 children: [
-                  // صورة المتجر
+                  // صورة المتجر مع Hero Animation
                   SizedBox(
                     height: 140,
                     width: double.infinity,
-                    child: Image.asset(
-                      store.displayImage,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Center(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: Image.asset(
-                              'assets/images/hadjADS.png',
-                              fit: BoxFit.cover,
-                              width: double.infinity,
-                            ),
-                          ),
+                    child: Hero(
+                      tag: 'store-image-${store.id}',
+                      createRectTween: (begin, end) {
+                        return MaterialRectCenterArcTween(
+                          begin: begin,
+                          end: end,
                         );
                       },
+                      flightShuttleBuilder:
+                          (
+                            BuildContext flightContext,
+                            Animation<double> animation,
+                            HeroFlightDirection flightDirection,
+                            BuildContext fromHeroContext,
+                            BuildContext toHeroContext,
+                          ) {
+                            // This widget appears during the transition
+                            final Widget hero =
+                                flightDirection == HeroFlightDirection.push
+                                ? fromHeroContext.widget
+                                : toHeroContext.widget;
+
+                            return AnimatedBuilder(
+                              animation: animation,
+                              builder: (context, child) {
+                                return FadeTransition(
+                                  opacity: animation.drive(
+                                    CurveTween(curve: Curves.easeInOut),
+                                  ),
+                                  child: child,
+                                );
+                              },
+                              child: hero,
+                            );
+                          },
+                      child: Material(
+                        type: MaterialType.transparency,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Image.asset(
+                            store.displayImage,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Image.asset(
+                                'assets/images/hadjADS.png',
+                                fit: BoxFit.cover,
+                              );
+                            },
+                          ),
+                        ),
+                      ),
                     ),
                   ),
 
@@ -152,31 +208,10 @@ class _StoresHorizontalListState extends State<StoresHorizontalList> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         if (store.isPromoted)
-                          _buildBadge('🚀 مرو', Colors.orange),
+                          _buildBadge('⭐️ مروج', Colors.amber),
                         const SizedBox(height: 6),
                         if (store.isExclusive)
                           _buildBadge('💎 حصري', Colors.blue),
-                        if (!store.isOpen)
-                          Container(
-                            margin: const EdgeInsets.only(top: 6),
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 10,
-                              vertical: 4,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.red.withOpacity(0.9),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Text(
-                              'مغلق',
-                              style: ArabicTextStyle(
-                                arabicFont: ArabicFont.dinNextLTArabic,
-                                fontSize: 12,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
                       ],
                     ),
                   ),
@@ -208,8 +243,6 @@ class _StoresHorizontalListState extends State<StoresHorizontalList> {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        if (store.isOpen)
-                          Icon(Icons.circle, size: 10, color: Colors.green),
                       ],
                     ),
 
@@ -263,11 +296,11 @@ class _StoresHorizontalListState extends State<StoresHorizontalList> {
                             Icon(
                               Icons.delivery_dining,
                               size: 18,
-                              color: AppColors.primary,
+                              color: AppColors.textSecondary,
                             ),
                             const SizedBox(width: 4),
                             Text(
-                              'سعر التوصيل: ${store.deliveryPrice}',
+                              'سعر التوصيل: ${store.deliveryPrice.toInt()}دج',
                               style: ArabicTextStyle(
                                 arabicFont: ArabicFont.dinNextLTArabic,
                                 fontSize: 14,
@@ -284,7 +317,7 @@ class _StoresHorizontalListState extends State<StoresHorizontalList> {
                             vertical: 4,
                           ),
                           decoration: BoxDecoration(
-                            color: Colors.blue,
+                            color: Colors.amber,
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Row(
@@ -305,6 +338,29 @@ class _StoresHorizontalListState extends State<StoresHorizontalList> {
                                 ),
                               ),
                             ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.location_on,
+                          size: 16,
+                          color: AppColors.textSecondary,
+                        ),
+                        const SizedBox(width: 4),
+                        Expanded(
+                          child: Text(
+                            store.location,
+                            style: ArabicTextStyle(
+                              arabicFont: ArabicFont.dinNextLTArabic,
+                              fontSize: 14,
+                              color: AppColors.textSecondary,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ],
@@ -347,7 +403,7 @@ class _StoresHorizontalListState extends State<StoresHorizontalList> {
         final category = categories.firstWhere(
           (c) => c.id == widget.categoryId,
         );
-        categoryName = category.name ?? '';
+        categoryName = category.name;
       } catch (e) {
         // Category not found
       }

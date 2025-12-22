@@ -90,14 +90,14 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
           item.onTap();
           widget.onTap?.call(index);
         },
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(100),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOut,
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 6),
           decoration: BoxDecoration(
             color: isSelected ? color.withOpacity(0.1) : Colors.transparent,
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(100),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,

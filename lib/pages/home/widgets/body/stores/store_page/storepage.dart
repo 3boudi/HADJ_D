@@ -25,6 +25,7 @@ class _StorePageState extends State<StorePage> {
   late List<ItemModel> filteredItems;
   late String selectedClassItemId;
   int cartItemCount = 0;
+  bool _isImagePrecached = false;
 
   @override
   void initState() {
@@ -38,6 +39,24 @@ class _StorePageState extends State<StorePage> {
     selectedClassItemId = classItems.isNotEmpty ? classItems.first.id : '';
 
     _filterItems();
+
+    // Precache the store image
+    if (store != null && !_isImagePrecached) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        precacheImage(
+          AssetImage(store!.displayImage),
+          context,
+          onError: (exception, stackTrace) {
+            // Preload default image if store image fails
+            precacheImage(
+              const AssetImage('assets/images/hadjADS.png'),
+              context,
+            );
+          },
+        );
+        _isImagePrecached = true;
+      });
+    }
   }
 
   void _filterItems() {
@@ -110,6 +129,7 @@ class _StorePageState extends State<StorePage> {
               // Hero Image مع الأزرار
               Stack(
                 children: [
+                  // Hero Image مع Hero Animation
                   Container(
                     height: 220,
                     width: double.infinity,
@@ -119,24 +139,59 @@ class _StorePageState extends State<StorePage> {
                         bottomRight: Radius.circular(30),
                       ),
                     ),
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.only(
-                        bottomLeft: Radius.circular(30),
-                        bottomRight: Radius.circular(30),
-                      ),
-                      child: Image.asset(
-                        store!.displayImage,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Container(
-                            color: AppColors.primary.withOpacity(0.2),
-                            child: Icon(
-                              Icons.restaurant,
-                              size: 80,
-                              color: AppColors.primary,
-                            ),
-                          );
-                        },
+                    child: Hero(
+                      tag: 'store-image-${store!.id}',
+                      createRectTween: (begin, end) {
+                        return MaterialRectCenterArcTween(
+                          begin: begin,
+                          end: end,
+                        );
+                      },
+                      flightShuttleBuilder:
+                          (
+                            BuildContext flightContext,
+                            Animation<double> animation,
+                            HeroFlightDirection flightDirection,
+                            BuildContext fromHeroContext,
+                            BuildContext toHeroContext,
+                          ) {
+                            // This widget appears during the transition
+                            final Widget hero =
+                                flightDirection == HeroFlightDirection.push
+                                ? fromHeroContext.widget
+                                : toHeroContext.widget;
+
+                            return AnimatedBuilder(
+                              animation: animation,
+                              builder: (context, child) {
+                                return FadeTransition(
+                                  opacity: animation.drive(
+                                    CurveTween(curve: Curves.easeInOut),
+                                  ),
+                                  child: child,
+                                );
+                              },
+                              child: hero,
+                            );
+                          },
+                      child: Material(
+                        type: MaterialType.transparency,
+                        child: ClipRRect(
+                          borderRadius: const BorderRadius.only(
+                            bottomLeft: Radius.circular(30),
+                            bottomRight: Radius.circular(30),
+                          ),
+                          child: Image.asset(
+                            store!.displayImage,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Image.asset(
+                                'assets/images/hadjADS.png',
+                                fit: BoxFit.cover,
+                              );
+                            },
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -191,16 +246,8 @@ class _StorePageState extends State<StorePage> {
                 ],
               ),
 
-              // معلومات المتجر
-              InformationStore(
-                storeName: store!.name,
-                isOpen: store!.isOpen,
-                deliveryTime: '20 - 40',
-                deliveryPrice: store!.deliveryPrice,
-                rating: store!.rating,
-                ratingCount: store!.orderCount,
-                location: store!.location,
-              ),
+              // معلومات المتجر - Updated to pass the store object
+              InformationStore(store: store!),
 
               // فئات العناصر
               if (classItems.isNotEmpty)
