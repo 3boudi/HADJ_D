@@ -7,7 +7,7 @@
 ![Flutter](https://img.shields.io/badge/Flutter-3.16.0-blue)
 ![Dart](https://img.shields.io/badge/Dart-3.2.0-blue)
 ![License](https://img.shields.io/badge/License-MIT-green)
-![Platform](https://img.shields.io/badge/Platform-Android%20%7C%20iOS-orange)
+![Platform](https://img.shields.io/badge/Platform-Android%20%7C%20iOS%20%7C%20web-orange)
 ![Arabic](https://img.shields.io/badge/Arabic-Full%20Support-green)
 
 </div>
