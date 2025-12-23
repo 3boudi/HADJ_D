@@ -4,7 +4,25 @@ import './class_item_model.dart';
 import './item_model.dart';
 
 class StoreDataManager {
-  // تخزين بيانات كل متجر
+  // === دوال المساعدة ===
+
+  // دالة لإنشاء أقسام افتراضية لكل متجر تتضمن قسم "الكل"
+  static List<ClassItemModel> _createDefaultClassItems(String storeId) {
+    return [ClassItemModel(id: '${storeId}_1', name: 'الكل', storeId: storeId)];
+  }
+
+  // دالة لاستخراج الفئات من الأقسام (باستثناء "الكل" وأول 3 أقسام فقط)
+  static List<String> _extractCategoriesFromClassItems(
+    List<ClassItemModel> classItems,
+  ) {
+    return classItems
+        .where((item) => item.name != 'الكل') // استبعاد قسم "الكل"
+        .take(3) // أخذ أول 3 أقسام فقط
+        .map((item) => item.name)
+        .toList();
+  }
+
+  // === تخزين البيانات ===
   static final Map<String, Map<String, dynamic>> _storeData = {
     '1': {
       'store': StoreModel(
@@ -15,7 +33,7 @@ class StoreDataManager {
         location: 'ساحة 8 ماي 1945',
         orderCount: 88,
         rating: 4.3,
-        imageUrl: 'assets/images/q.png',
+        imageUrl: 'assets/images/store1.png',
         isActive: true,
         createdAt: DateTime.now().subtract(const Duration(days: 30)),
         updatedAt: DateTime.now(),
@@ -23,7 +41,7 @@ class StoreDataManager {
         deliveryPrice: 150,
         isPromoted: true,
         isExclusive: true,
-        categories: ['شواء', 'كبدة', 'لحم أحمر'],
+        // تمت إزالة categories من هنا
       ),
       'classItems': [
         ClassItemModel(id: '1_1', name: 'الكل', storeId: '1'),
@@ -66,16 +84,16 @@ class StoreDataManager {
         categoryId: '2',
         location: 'حي النخيل',
         orderCount: 890,
-        rating: 4.8, // تقييم عالي
+        rating: 4.8,
         imageUrl: 'assets/images/store2.png',
         isActive: true,
         createdAt: DateTime.now().subtract(const Duration(days: 25)),
         updatedAt: DateTime.now(),
-        isOpen: true, // مفتوح
+        isOpen: true,
         deliveryPrice: 150,
         isPromoted: true,
         isExclusive: false,
-        categories: ['حلويات', 'معجنات'],
+        // تمت إزالة categories من هنا
       ),
       'classItems': [
         ClassItemModel(id: '2_1', name: 'الكل', storeId: '2'),
@@ -106,16 +124,16 @@ class StoreDataManager {
         categoryId: '3',
         location: 'حي العليا',
         orderCount: 2100,
-        rating: 4.2, // تقييم أقل
+        rating: 4.2,
         imageUrl: null,
         isActive: true,
         createdAt: DateTime.now().subtract(const Duration(days: 40)),
         updatedAt: DateTime.now(),
-        isOpen: true, // مفتوح
+        isOpen: true,
         deliveryPrice: 150,
         isPromoted: true,
         isExclusive: false,
-        categories: ['سوبرماركت', 'خضار', 'فواكه'],
+        // تمت إزالة categories من هنا
       ),
       'classItems': [
         ClassItemModel(id: '3_1', name: 'الكل', storeId: '3'),
@@ -146,16 +164,16 @@ class StoreDataManager {
         categoryId: '5',
         location: 'شارع الثلاثين',
         orderCount: 450,
-        rating: 4.9, // تقييم مرتفع جداً
+        rating: 4.9,
         imageUrl: null,
         isActive: true,
         createdAt: DateTime.now().subtract(const Duration(days: 10)),
         updatedAt: DateTime.now(),
-        isOpen: true, // مفتوح
+        isOpen: true,
         deliveryPrice: 200,
         isPromoted: false,
         isExclusive: false,
-        categories: ['لحوم', 'دجاج'],
+        // تمت إزالة categories من هنا
       ),
       'classItems': [
         ClassItemModel(id: '4_1', name: 'الكل', storeId: '4'),
@@ -186,16 +204,16 @@ class StoreDataManager {
         categoryId: '6',
         location: 'حي الروضة',
         orderCount: 980,
-        rating: 4.7, // تقييم جيد
+        rating: 4.7,
         imageUrl: 'assets/images/store4.png',
         isActive: true,
         createdAt: DateTime.now().subtract(const Duration(days: 15)),
         updatedAt: DateTime.now(),
-        isOpen: true, // مفتوح
+        isOpen: true,
         deliveryPrice: 100,
         isPromoted: true,
         isExclusive: false,
-        categories: ['منزلي', 'أكلات شعبية'],
+        // تمت إزالة categories من هنا
       ),
       'classItems': [
         ClassItemModel(id: '5_1', name: 'الكل', storeId: '5'),
@@ -220,12 +238,41 @@ class StoreDataManager {
     },
   };
 
-  // === دوال الحصول على البيانات ===
+  // === دوال الحصول على البيانات المعدلة ===
 
-  // الحصول على متجر
+  // الحصول على متجر مع الفئات المحسوبة
   static StoreModel? getStore(String storeId) {
     final storeData = _storeData[storeId];
-    return storeData != null ? storeData['store'] as StoreModel : null;
+    if (storeData != null) {
+      final store = storeData['store'] as StoreModel;
+      final classItems = List<ClassItemModel>.from(
+        storeData['classItems'] ?? [],
+      );
+
+      // حساب الفئات تلقائياً من الأقسام
+      final categories = _extractCategoriesFromClassItems(classItems);
+
+      // إعادة StoreModel جديد مع الفئات المحسوبة
+      return StoreModel(
+        id: store.id,
+        name: store.name,
+        specialty: store.specialty,
+        categoryId: store.categoryId,
+        location: store.location,
+        orderCount: store.orderCount,
+        rating: store.rating,
+        imageUrl: store.imageUrl,
+        isActive: store.isActive,
+        createdAt: store.createdAt,
+        updatedAt: store.updatedAt,
+        isOpen: store.isOpen,
+        deliveryPrice: store.deliveryPrice,
+        isPromoted: store.isPromoted,
+        isExclusive: store.isExclusive,
+        categories: categories, // الفئات المحسوبة
+      );
+    }
+    return null;
   }
 
   // الحصول على أقسام متجر معين
@@ -234,7 +281,7 @@ class StoreDataManager {
     if (storeData != null) {
       return List<ClassItemModel>.from(storeData['classItems'] ?? []);
     }
-    return [];
+    return _createDefaultClassItems(storeId); // أقسام افتراضية
   }
 
   // الحصول على عناصر قسم معين
@@ -265,64 +312,77 @@ class StoreDataManager {
     return [];
   }
 
-  // === دوال التصفية والترتيب ===
+  // === دوال التصفية والترتيب المعدلة ===
 
-  // الحصول على جميع المتاجر مرتبة حسب الأولوية
+  // الحصول على جميع المتاجر مرتبة حسب الأولوية مع الفئات المحسوبة
   static List<StoreModel> getAllStoresSorted() {
-    List<StoreModel> stores = _storeData.values
-        .map((data) => data['store'] as StoreModel)
-        .toList();
-
+    List<StoreModel> stores = [];
+    for (var storeId in _storeData.keys) {
+      final store = getStore(storeId);
+      if (store != null) {
+        stores.add(store);
+      }
+    }
     return _sortStores(stores);
   }
 
   // تصفية المتاجر حسب الفئة مع الترتيب
   static List<StoreModel> getStoresByCategorySorted(String categoryId) {
-    List<StoreModel> stores = _storeData.values
-        .map((data) => data['store'] as StoreModel)
-        .where((store) => store.categoryId == categoryId)
-        .toList();
-
+    List<StoreModel> stores = [];
+    for (var storeId in _storeData.keys) {
+      final store = getStore(storeId);
+      if (store != null && store.categoryId == categoryId) {
+        stores.add(store);
+      }
+    }
     return _sortStores(stores);
   }
 
   // الحصول على المتاجر المفتوحة فقط مرتبة حسب التقييم
   static List<StoreModel> getOpenStoresSorted() {
-    List<StoreModel> stores = _storeData.values
-        .map((data) => data['store'] as StoreModel)
-        .where((store) => store.isOpen)
-        .toList();
-
+    List<StoreModel> stores = [];
+    for (var storeId in _storeData.keys) {
+      final store = getStore(storeId);
+      if (store != null && store.isOpen) {
+        stores.add(store);
+      }
+    }
     return _sortByRating(stores);
   }
 
   // الحصول على المتاجر المغلقة فقط مرتبة حسب التقييم
   static List<StoreModel> getClosedStoresSorted() {
-    List<StoreModel> stores = _storeData.values
-        .map((data) => data['store'] as StoreModel)
-        .where((store) => !store.isOpen)
-        .toList();
-
+    List<StoreModel> stores = [];
+    for (var storeId in _storeData.keys) {
+      final store = getStore(storeId);
+      if (store != null && !store.isOpen) {
+        stores.add(store);
+      }
+    }
     return _sortByRating(stores);
   }
 
   // الحصول على المتاجر المروجة أولاً
   static List<StoreModel> getPromotedStoresSorted() {
-    List<StoreModel> stores = _storeData.values
-        .map((data) => data['store'] as StoreModel)
-        .where((store) => store.isPromoted)
-        .toList();
-
+    List<StoreModel> stores = [];
+    for (var storeId in _storeData.keys) {
+      final store = getStore(storeId);
+      if (store != null && store.isPromoted) {
+        stores.add(store);
+      }
+    }
     return _sortStores(stores);
   }
 
   // الحصول على المتاجر الحصرية
   static List<StoreModel> getExclusiveStoresSorted() {
-    List<StoreModel> stores = _storeData.values
-        .map((data) => data['store'] as StoreModel)
-        .where((store) => store.isExclusive)
-        .toList();
-
+    List<StoreModel> stores = [];
+    for (var storeId in _storeData.keys) {
+      final store = getStore(storeId);
+      if (store != null && store.isExclusive) {
+        stores.add(store);
+      }
+    }
     return _sortStores(stores);
   }
 
@@ -365,18 +425,57 @@ class StoreDataManager {
 
   // الحصول على المتاجر القريبة (محاكاة)
   static List<StoreModel> getNearbyStores() {
-    // هنا يمكن إضافة منطق تحديد الموقع
-    // حالياً نرجع المتاجر المفتوحة مرتبة حسب التقييم
     return getOpenStoresSorted();
   }
 
   // الحصول على المتاجر الجديدة (حسب تاريخ الإنشاء)
   static List<StoreModel> getNewStores() {
-    List<StoreModel> stores = _storeData.values
-        .map((data) => data['store'] as StoreModel)
-        .toList();
+    List<StoreModel> stores = [];
+    for (var storeId in _storeData.keys) {
+      final store = getStore(storeId);
+      if (store != null) {
+        stores.add(store);
+      }
+    }
 
     stores.sort((a, b) => b.createdAt.compareTo(a.createdAt));
     return stores;
+  }
+
+  // دالة إضافية لإنشاء متجر جديد مع الأقسام الافتراضية
+  static Map<String, dynamic> createNewStore({
+    required String id,
+    required String name,
+    required String specialty,
+    required String categoryId,
+    required String location,
+    double rating = 4.0,
+    int orderCount = 0,
+    String? imageUrl,
+    double deliveryPrice = 100,
+    bool isPromoted = false,
+    bool isExclusive = false,
+  }) {
+    return {
+      'store': StoreModel(
+        id: id,
+        name: name,
+        specialty: specialty,
+        categoryId: categoryId,
+        location: location,
+        orderCount: orderCount,
+        rating: rating,
+        imageUrl: imageUrl,
+        isActive: true,
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+        isOpen: true,
+        deliveryPrice: deliveryPrice,
+        isPromoted: isPromoted,
+        isExclusive: isExclusive,
+      ),
+      'classItems': _createDefaultClassItems(id), // أقسام افتراضية تتضمن "الكل"
+      'items': {},
+    };
   }
 }

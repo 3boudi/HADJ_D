@@ -108,7 +108,7 @@ class _StoresHorizontalListState extends State<StoresHorizontalList> {
         stores.sort((a, b) => b.createdAt.compareTo(a.createdAt));
         break;
       default:
-        // الترتيب الافتراضي (مستخدم في StoreDataManager.getAllStoresSorted)
+        stores = StoreDataManager.getAllStoresSorted();
         break;
     }
   }
@@ -250,13 +250,29 @@ class _StoresHorizontalListState extends State<StoresHorizontalList> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text(
-                          store.isOpen ? 'مفتوح' : 'مغلق',
-                          style: ArabicTextStyle(
-                            arabicFont: ArabicFont.dinNextLTArabic,
-                            fontSize: 14,
-                            color: store.isOpen ? Colors.green : Colors.red,
-                            fontWeight: FontWeight.bold,
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 2,
+                          ),
+                          decoration: BoxDecoration(
+                            color: store.isOpen
+                                ? Colors.green[50]
+                                : Colors.red[50],
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: store.isOpen ? Colors.green : Colors.red,
+                              width: 2,
+                            ),
+                          ),
+                          child: Text(
+                            store.isOpen ? 'مفتوح' : 'مغلق',
+                            style: ArabicTextStyle(
+                              arabicFont: ArabicFont.dinNextLTArabic,
+                              fontSize: 15,
+                              color: store.isOpen ? Colors.green : Colors.red,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                         const SizedBox(width: 4),

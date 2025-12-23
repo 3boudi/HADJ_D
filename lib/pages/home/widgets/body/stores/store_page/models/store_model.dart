@@ -1,7 +1,5 @@
 // file: models/store_model.dart
 
-import 'dart:ffi';
-
 class StoreModel {
   final String id;
   final String name;
@@ -36,7 +34,7 @@ class StoreModel {
     this.deliveryPrice = 100,
     this.isPromoted = false,
     this.isExclusive = false,
-    this.categories = const [],
+    this.categories = const [], // أصبحت قابلة للتعديل
   });
 
   String get displayImage => imageUrl ?? 'assets/images/hadjADS.png';
