@@ -325,8 +325,7 @@ MIT License © 2024 Hadj Delivery
 
 <div align="center">
 
-Made with ❤️ in Qais, Algeria
-
-![DZ](https://via.placeholder.com/50/006233/FFFFFF?text=DZ)
+ made by : HADJ DELIVERY DEV TEAM
+![DZ]()
 
 </div>
