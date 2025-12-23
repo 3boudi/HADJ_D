@@ -129,32 +129,6 @@ hadj_delivery/
 └── README.md
 ```
 
-hadj_delivery/
-├── android/                     # Native Android files
-├── ios/                         # Native iOS files
-├── lib/                         # Main application code
-│   ├── constants/               # Global constants
-│   │   └── colors.dart
-│   ├── models/                  # Data models
-│   │   ├── onboarding_model.dart
-│   │   ├── store_model.dart
-│   │   ├── category_model.dart
-│   │   ├── item_model.dart
-│   │   ├── class_item_model.dart
-│   │   ├── adsmodels.dart
-│   │   └── store_data_manager.dart
-│   ├── splash/                  # Splash screen
-│   ├── login/                   # Authentication system
-│   ├── pages/                   # Main pages (Home, Store, Cart, Profile)
-│   ├── widgets/                 # Reusable UI components
-│   └── main.dart                # App entry point
-├── assets/                      # Images, icons, fonts, lottie
-├── test/                        # Unit tests
-├── pubspec.yaml
-└── README.md
-
-````
-
 ---
 
 ## 🚀 Getting Started
