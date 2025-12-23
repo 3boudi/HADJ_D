@@ -316,7 +316,7 @@ MIT License © 2024 Hadj Delivery
 
 ## 📞 Contact
 
-* **Email:** [support@hadjdelivery.com](mailto:vinnyhalitim47@gmailcom)
+* **Email:** [vinnyhalitim47@gmail.com](mailto:vinnyhalitim47@gmail.com)
   
 * **Location:** Qais, Algeria
 
