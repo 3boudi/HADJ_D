@@ -326,6 +326,6 @@ MIT License © 2024 Hadj Delivery
 <div align="center">
 
  made by : HADJ DELIVERY DEV TEAM
-![DZ]()
+![DZ](assets/images/HD_logo.png)
 
 </div>
