@@ -108,7 +108,7 @@ class _StoresHorizontalListState extends State<StoresHorizontalList> {
         stores.sort((a, b) => b.createdAt.compareTo(a.createdAt));
         break;
       default:
-        stores = StoreDataManager.getAllStoresSorted();
+        // الإبقاء على الترتيب الافتراضي من getStoresByCategorySorted
         break;
     }
   }
